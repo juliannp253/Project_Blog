@@ -8,3 +8,11 @@ Feature: User Login
     And the user clicks the login button
     Then the user should be redirected to the dashboard
     
+  Scenario: New user
+    Given we have a user with no existing credentials
+    When the user visits the sign up page
+    And they enter a valid email
+    And they enter a valid password
+    Then the user should be redirected to log in page
+
+  
