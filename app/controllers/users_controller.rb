@@ -1,17 +1,19 @@
-# app/controllers/users_controller.rb
 class UsersController < ApplicationController
+  allow_unauthenticated_access only: %i[new create]
+
   def new
     @user = User.new
   end
 
   def create
     @user = User.new(user_params)
+
     if @user.save
-      # Autom. log in after account creatino
       session[:user_id] = @user.id
-      redirect_to after_authentication_url
+      redirect_to after_authentication_url, notice: "Welcome, #{@user.email_address}!"
     else
-      render :new
+      flash.now[:alert] = "There was an error creating your account."
+      render :new, status: :unprocessable_entity
     end
   end
 
