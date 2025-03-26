@@ -42,6 +42,6 @@ When("they click the sign up button") do
   click_button "sign_up"
 end
 
-Then(" the user should be redirected to the home page") do
+Then("the user should be redirected to the home page") do
   expect(current_path).to eq(dashboard_path)
 end
