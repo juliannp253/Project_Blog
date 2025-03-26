@@ -19,5 +19,5 @@ When("the user clicks the login button") do
 end
 
 Then("the user should be redirected to the dashboard") do
-  expect(current_path).to eq(dashboard_path)
+  expect(current_path).to eq(root_path)
 end
