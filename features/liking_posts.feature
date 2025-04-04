@@ -1,6 +1,6 @@
 Feature: Like posts
 
-Scenario: I should be able to star other people posts
+Scenario: I should be able to like other people posts
     Given there are two users with posts, Bob and Mary
     And I sign in as Bob
     And I am viewing the timeline

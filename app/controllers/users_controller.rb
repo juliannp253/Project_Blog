@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
-  allow_unauthenticated_access only: %i[new create]
-
+  skip_before_action :require_authentication, only: [ :new, :create ]
   def new
     @user = User.new
   end

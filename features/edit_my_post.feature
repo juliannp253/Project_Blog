@@ -6,7 +6,7 @@ Feature: Editing Posts
     Given there are two users with posts, Bob and Mary
     And I sign in as Bob
     And I am viewing one of my posts
-    When I click "Edit"
+    When I click Edit
     And fill out the form with a new caption
     And I submit the form
     Then the post's caption should have changed
@@ -15,7 +15,7 @@ Feature: Editing Posts
     Given there are two users with posts, Bob and Mary
     And I sign in as Bob
     And I am viewing one of my posts
-    When I click "Edit"
+    When I click Edit
     And fill out the form with a new image url
     And I submit the form
     Then the post's image should have changed
