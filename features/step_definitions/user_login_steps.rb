@@ -1,9 +1,13 @@
-Given("a user exists with email {string} and password {string}") do |email, password|
-  @user = User.create!(email_address: email, password: password, password_confirmation: password)
+Given("a user exists with a username {string}, email {string}, and password {string}") do |username, email, password|
+  @user = User.create!(username: username, email_address: email, password: password, password_confirmation: password)
 end
 
 When("the user visits the login page") do
   visit new_session_path
+end
+
+When("the user enters {string} in the username field") do |username|
+  fill_in "username", with: name
 end
 
 When("the user enters {string} in the email field") do |email|
