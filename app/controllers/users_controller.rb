@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :require_authentication, only: [ :new, :create ]
   before_action :authenticate_user!, except: [ :new, :create ]
+  before_action :set_user, except: [ :new, :create ]
 
   def new
     @user = User.new
@@ -19,12 +20,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = current_user
   end
 
   def update
-    @user = current_user
-    if @user.update(user_params)
+    if password_blank? && @user.update(user_params_without_password)
+      redirect_to root_path, notice: 'Profile updated successfully.'
+    elsif !password_blank? && @user.update(user_params)
       redirect_to root_path, notice: 'Profile updated successfully.'
     else
       render :edit, status: :unprocessable_entity
@@ -33,7 +34,19 @@ class UsersController < ApplicationController
 
   private
 
+  def set_user
+    @user = current_user
+  end
+
   def user_params
     params.require(:user).permit(:email_address, :name, :password, :password_confirmation)
+  end
+
+  def user_params_without_password
+    params.require(:user).permit(:email_address)
+  end
+
+  def password_blank?
+    params[:user][:password].blank? && params[:user][:password_confirmation].blank?
   end
 end
