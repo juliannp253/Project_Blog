@@ -4,6 +4,8 @@ module Authentication
   included do
     before_action :require_authentication
     helper_method :authenticated?
+    helper_method :current_user
+    helper_method :user_signed_in?
   end
 
   class_methods do
@@ -48,5 +50,24 @@ module Authentication
     def terminate_session
       Current.session.destroy
       cookies.delete(:session_id)
+    end
+
+    def authenticate_user!
+      unless user_signed_in?
+        store_location
+        redirect_to new_session_path, alert: "Please sign in to continue."
+      end
+    end
+
+    def store_location
+      session[:return_to] = request.fullpath if request.get?
+    end
+
+    def user_signed_in?
+      current_user.present?
+    end
+
+    def current_user
+      @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
     end
 end

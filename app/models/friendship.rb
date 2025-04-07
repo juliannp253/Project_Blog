@@ -5,19 +5,9 @@ class Friendship < ApplicationRecord
   validates :user_id, presence: true
   validates :friend_id, presence: true
   validates :user_id, uniqueness: { scope: :friend_id }
-  validate :not_self_referential
+  validate :not_self_referential, on: :create
 
-  enum status: { pending: 0, accepted: 1 }
-
-  def accept!
-    accepted!
-    # Create reciprocal friendship
-    Friendship.create!(
-      user: friend,
-      friend: user,
-      status: :accepted
-    )
-  end
+  enum :status, { pending: 0, accepted: 1 }
 
   private
 

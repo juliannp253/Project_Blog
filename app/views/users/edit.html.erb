@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <h2>Edit Profile</h2>
+
+  <%= form_with(model: current_user, url: update_profile_path, method: :patch) do |f| %>
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(@user.errors.count, "error") %> prevented your profile from being saved:</h4>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= f.label :email_address, class: "form-label" %>
+      <%= f.email_field :email_address, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :password, "New Password (leave blank if you don't want to change it)", class: "form-label" %>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :password_confirmation, class: "form-label" %>
+      <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Update Profile", class: "btn btn-primary" %>
+  <% end %>
+</div>

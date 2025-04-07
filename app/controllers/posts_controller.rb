@@ -1,29 +1,31 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[ show edit update destroy ]
   before_action :require_authentication
+  before_action :set_post, only: %i[show edit update destroy]
+  before_action :authorize_post, only: %i[edit update destroy]
 
-  # GET /posts or /posts.json
   def index
-    @posts = Post.all
+    @posts = if current_user.friends.any?
+      friend_ids = current_user.friends.pluck(:id)
+      Post.where(user_id: [ current_user.id, *friend_ids ])
+    else
+      current_user.posts
+    end.order(created_at: :desc)
   end
 
-  # GET /posts/1 or /posts/1.json
+  # ... rest of the controller remains the same ...
+
   def show
   end
 
-  # GET /posts/new
   def new
     @post = Post.new
   end
 
-  # GET /posts/1/edit
   def edit
   end
 
-  # POST /posts or /posts.json
   def create
-    puts "DEBUG current_user: #{current_user.inspect}"
-    @post = current_user.posts.build(post_params) # Asociar el post al usuario autenticado
+    @post = current_user.posts.build(post_params)
 
     respond_to do |format|
       if @post.save
@@ -36,7 +38,6 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
   def update
     respond_to do |format|
       if @post.update(post_params)
@@ -49,25 +50,22 @@ class PostsController < ApplicationController
     end
   end
 
-  # DELETE /posts/1 or /posts/1.json
   def destroy
     @post.destroy!
 
     respond_to do |format|
-      format.html { redirect_to posts_path, status: :see_other, notice: "Post was successfully destroyed." }
+      format.html { redirect_to posts_path, notice: "Post was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def post_params
-      # params.expect(post: [ :title, :content, :user_id ])
-      params.require(:post).permit(:title, :content)
-    end
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :content)
+  end
 end

@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h2>Friend Requests</h2>
+
+  <% if current_user.pending_friend_requests.any? %>
+    <ul class="list-group">
+      <% current_user.pending_friend_requests.each do |friendship| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center" id="friend-request-<%= friendship.user.id %>">
+          <span><%= friendship.user.email_address %></span>
+          <div class="btn-group">
+            <%= button_to "Accept",
+                        friendship_path(friendship),
+                        method: :patch,
+                        class: "btn btn-sm btn-success" %>
+            <%= button_to "Decline",
+                        friendship_path(friendship),
+                        method: :delete,
+                        class: "btn btn-sm btn-danger" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No pending friend requests</p>
+  <% end %>
+</div>

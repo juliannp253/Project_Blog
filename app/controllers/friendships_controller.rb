@@ -5,10 +5,16 @@ class FriendshipsController < ApplicationController
   def create
     @friendship = current_user.friendships.build(friend: @user)
 
-    if @friendship.save
-      redirect_to @user, notice: "Friend request sent to #{@user.email_address}"
+    if current_user.can_send_friend_request_to?(@user)
+      @friendship = current_user.friendships.build(friend: @user, status: "pending")
+
+      if @friendship.save
+        redirect_to friends_path, notice: "Friend request sent to #{@user.email_address}"
+      else
+        redirect_to friends_path, alert: "Could not send friend request"
+      end
     else
-      redirect_to @user, alert: "Unable to send friend request"
+      redirect_to friends_path, alert: "Cannot send friend request to this user"
     end
   end
 
