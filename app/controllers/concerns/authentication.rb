@@ -20,7 +20,10 @@ module Authentication
     end
 
     def require_authentication
-      resume_session || request_authentication
+      unless user_signed_in?
+        request_authentication
+        return false
+      end
     end
 
     def resume_session
@@ -33,11 +36,11 @@ module Authentication
 
     def request_authentication
       session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
+      redirect_to new_session_path, alert: "Please sign in to continue."
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
+      session.delete(:return_to_after_authenticating) || root_path
     end
 
     def start_new_session_for(user)
@@ -60,7 +63,7 @@ module Authentication
     end
 
     def store_location
-      session[:return_to] = request.fullpath if request.get?
+      session[:return_to_after_authenticating] = request.url if request.get?
     end
 
     def user_signed_in?

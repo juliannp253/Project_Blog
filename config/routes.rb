@@ -6,16 +6,16 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Authentication routes
-  get "login", to: "sessions#new"
-  post "login", to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
+  get "login", to: "sessions#new", as: :new_session
+  post "login", to: "sessions#create", as: :session
+  delete "logout", to: "sessions#destroy", as: :logout  # Changed from :destroy_session
 
   # User profile routes
   get "profile/edit", to: "users#edit", as: :edit_profile
   patch "profile", to: "users#update", as: :update_profile
 
   # Registration routes
-  get "signup", to: "users#new"
+  get "signup", to: "users#new", as: :signup
   post "signup", to: "users#create"
 
   # Resources
