@@ -1,0 +1,19 @@
+<% if current_user != user %>
+  <% if current_user.friends_with?(user) %>
+    <%= button_to "Remove Friend", 
+                  friendship_path(current_user.friendships.find_by(friend: user)), 
+                  method: :delete,
+                  class: "btn btn-danger" %>
+  <% elsif current_user.friend_request_sent?(user) %>
+    <button class="btn btn-secondary" disabled>Friend Request Sent</button>
+  <% elsif current_user.friend_request_received?(user) %>
+    <%= button_to "Accept Friend Request",
+                  friendship_path(current_user.received_friendships.find_by(user: user)),
+                  method: :patch,
+                  class: "btn btn-success" %>
+  <% else %>
+    <%= button_to "Add Friend",
+                  user_friendships_path(user),
+                  class: "btn btn-primary" %>
+  <% end %>
+<% end %>

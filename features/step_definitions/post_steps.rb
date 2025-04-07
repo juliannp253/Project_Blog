@@ -166,3 +166,7 @@ Then('I should see the everyone\'s posts') do
   @mary.posts.each { |post| expect(page).to have_content(post.content) }
   @bob.posts.each { |post| expect(page).to have_content(post.content) }
 end
+
+When('fill out the form with a new image url') do
+  fill_in 'post[image_url]', with: 'https://example.com/new-image.jpg'
+end

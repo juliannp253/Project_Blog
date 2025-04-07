@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy"
 
+  resources :friendships, only: [ :create, :update, :destroy ]
+  resources :users do
+    post "friendships", to: "friendships#create"
+  end
+
   # Routes for user registration
   get "signup", to: "users#new"
   post "signup", to: "users#create"
