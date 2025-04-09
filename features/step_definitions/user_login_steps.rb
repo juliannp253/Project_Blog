@@ -7,7 +7,7 @@ When("the user visits the login page") do
 end
 
 When("the user enters {string} in the username field") do |username|
-  fill_in "username", with: name
+  fill_in "username", with: username
 end
 
 When("the user enters {string} in the email field") do |email|

@@ -143,17 +143,15 @@ Then('I should see her posts') do
 end
 
 Then('the posts should be in reverse order') do
-  sorted_posts = @mary.posts.order(created_at: :desc).map(&:content)
   page_posts = all('.post-content').map(&:text)
-  expect(page_posts).to eq(sorted_posts)
+  expect(@mary.posts.order(created_at: :desc).map(&:content)). ==(page_posts)
 end
 # END View Profiles
 
 # BEGIN View Timeline
 Then('everyone\'s posts should be in reverse order') do
-  sorted_posts = @mary.posts.order(created_at: :desc).map(&:content) + @bob.posts.order(created_at: :desc).map(&:content)
   page_posts = all('.post-content').map(&:text)
-  expect(sorted_posts).to eq(page_posts)
+  expect(@mary.posts.order(created_at: :desc).map(&:content) + @bob.posts.order(created_at: :desc).map(&:content)). ==(page_posts)
 end
 # END View Timeline
 
