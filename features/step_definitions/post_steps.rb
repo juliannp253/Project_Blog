@@ -1,3 +1,4 @@
+
 Given('there are two users with posts, Bob and Mary') do
   @bob = User.create!(username: "Bob", email_address: "bob@example.com", password: 'password')
   @mary = User.create!(username: "Mary", email_address: "mary@example.com", password: 'password')
