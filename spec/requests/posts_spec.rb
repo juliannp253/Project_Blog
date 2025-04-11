@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   before do
-    @user = User.create(username: "user", email_address: "juser@example.com", password: "1234", password_confirmation: "1234")
+    @user = User.create(username: "user", email_address: "juser@example.com", password: "123456", password_confirmation: "123456")
     @post = Post.create(title: "Post example", content: "This is content", user_id: @user.id)
   end
 
@@ -11,7 +11,7 @@ RSpec.describe "Posts", type: :request do
       post session_path, params: {
         username: @user.username,
         email_address: @user.email_address,
-        password: "1234"
+        password: "123456"
       }
     end
     it "should display dashboard" do

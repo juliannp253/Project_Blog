@@ -22,7 +22,6 @@ class PostsController < ApplicationController
 
   # POST /posts or /posts.json
   def create
-    puts "DEBUG current_user: #{current_user.inspect}"
     @post = current_user.posts.build(post_params) # Asociar el post al usuario autenticado
 
     respond_to do |format|
@@ -68,6 +67,6 @@ class PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       # params.expect(post: [ :title, :content, :user_id ])
-      params.require(:post).permit(:title, :content)
+      params.require(:post).permit(:title, :content, images: [])
     end
 end

@@ -51,14 +51,6 @@ Then('the post\'s caption should have changed') do
   expect(@bob_post.reload.content).to eq('Updated content by Bob')
 end
 
-When('fill out the form with a new image url') do
-  fill_in 'image_url', with: 'updated_bob_image.jpg'
-  f.text_field :image_url
-end
-
-Then('the post\'s image should have changed') do
-  expect(@bob_post.relaod.image_url).to eq('Updated_bob_image.jpg')
-end
 # END Edit a post
 
 # BEGIN Liking a Post

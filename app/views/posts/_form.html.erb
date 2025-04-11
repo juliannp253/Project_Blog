@@ -1,4 +1,4 @@
-<%= form_with(model: post) do |form| %>
+<%= form_with(model: post, local: true, html: { multipart: true }) do |form| %>
   <% if post.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -18,7 +18,12 @@
 
   <div>
     <%= form.label :content, style: "display: block" %>
-    <%= form.textarea :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.label :images, "Upload Images (you can select multiple)" %><br>
+    <%= form.file_field :images, multiple: true, direct_upload: true %>
   </div>
 
   <div>
