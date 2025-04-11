@@ -24,9 +24,9 @@ class UsersController < ApplicationController
 
   def update
     if password_blank? && @user.update(user_params_without_password)
-      redirect_to root_path, notice: 'Profile updated successfully.'
+      redirect_to root_path, notice: "Profile updated successfully."
     elsif !password_blank? && @user.update(user_params)
-      redirect_to root_path, notice: 'Profile updated successfully.'
+      redirect_to root_path, notice: "Profile updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end

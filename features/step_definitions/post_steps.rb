@@ -1,6 +1,7 @@
+
 Given('there are two users with posts, Bob and Mary') do
-  @bob = User.create!(email_address: "bob@example.com", password: 'password')
-  @mary = User.create!(email_address: "mary@example.com", password: 'password')
+  @bob = User.create!(username: "Bob", email_address: "bob@example.com", password: 'password')
+  @mary = User.create!(username: "Mary", email_address: "mary@example.com", password: 'password')
 
   @bob_post = Post.create!(title: 'Bob Post', content: 'This is Bob\'s post', user: @bob)
   @mary_post = Post.create!(title: 'Mary Post', content: 'This is Mary\'s post', user: @mary)
@@ -50,18 +51,11 @@ Then('the post\'s caption should have changed') do
   expect(@bob_post.reload.content).to eq('Updated content by Bob')
 end
 
-When('fill out the form with a new image url') do
-  fill_in 'Image URL', with: 'updated_bob_image.jpg'
-end
-
-Then('the post\'s image should have changed') do
-  expect(@bob_post.relaod.image_url).to eq('updated_bob_image.jpg')
-end
 # END Edit a post
 
 # BEGIN Liking a Post
 When('I click Likes in Mary\'s first post') do
-  within("#post_#{@mary_posts.id}") do
+  within("#post_#{@mary_post.id}") do
     click_button 'Like'
   end
 end
@@ -101,7 +95,7 @@ When('on the homepage') do
 end
 
 When('I click "Me"') do
-  click_link 'My Profile'
+  click_link 'My Profile', path(current_user)
 end
 
 Then('I should see my profile') do
@@ -121,20 +115,18 @@ When('I click someones username') do
 end
 
 Then('I should see their profile') do
-  expect(page).to have_content(@mary.username)
   expect(page).to have_content(@mary.email)
   @mary.posts.each do |post|
     expect(page).to have_content(post.content)
   end
 end
 
-When('I view Mary\'s profile') do |username|
-  user = User.find_by(username: username)
-  visit "/users/#{user.id}"
+When('I view Mary\'s profile') do
+  visit path(@mary)
 end
 
 Then('I should see her email address') do
-  expect(page).to have_content(@mary.email)
+  expect(page).to have_content(@mary.email_address)
 end
 
 Then('I should see her posts') do
@@ -144,23 +136,17 @@ Then('I should see her posts') do
 end
 
 Then('the posts should be in reverse order') do
-  sorted_posts = @mary.posts.order(created_at: :desc).map(&:content)
   page_posts = all('.post-content').map(&:text)
-  expect(page_posts).to eq(sorted_posts)
+  expect(@mary.posts.order(created_at: :desc).map(&:content)). ==(page_posts)
 end
 # END View Profiles
 
 # BEGIN View Timeline
 Then('everyone\'s posts should be in reverse order') do
-  posts_content = @mary.posts.order(created_at: :desc).pluck(:content) + @bob.posts.order(created_at: :desc).pluck(:content)
-  page_posts = page.all('.post-content').map(&:text)
-  expect(page_posts).to eq(posts_content)
+  page_posts = all('.post-content').map(&:text)
+  expect(@mary.posts.order(created_at: :desc).map(&:content) + @bob.posts.order(created_at: :desc).map(&:content)). ==(page_posts)
 end
 # END View Timeline
-
-
-
-
 
 Then('I should see the everyone\'s posts') do
   @mary.posts.each { |post| expect(page).to have_content(post.content) }

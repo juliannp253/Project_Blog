@@ -13,6 +13,11 @@
     </div>
   <% end %>
 
+    <div>
+    <%= form.label :username %>
+    <%= form.text_field :username, required: true %>
+  </div>
+
   <div>
     <%= form.label :email_address %>
     <%= form.email_field :email_address, required: true %>

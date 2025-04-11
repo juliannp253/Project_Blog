@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :posts, dependent: :destroy
 
+<<<<<<< HEAD
   # Friendship associations
   has_many :friendships, dependent: :destroy
   has_many :friends, -> { where(friendships: { status: :accepted }) },
@@ -47,3 +48,9 @@ class User < ApplicationRecord
     !received_friendship_requests.exists?(user: user)
   end
 end
+=======
+  normalizes :email_address, with: ->(e) { e.strip.downcase }
+  validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, presence: true, length: { minimum: 6 }
+end
+>>>>>>> origin/test
