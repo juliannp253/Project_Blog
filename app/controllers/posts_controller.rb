@@ -60,6 +60,11 @@ class PostsController < ApplicationController
   end
 
   private
+  def authorize_post
+    unless @post.user == current_user
+      redirect_to posts_path, alert: "You are not authorized to perform this action."
+    end
+  end
 
   def set_post
     @post = Post.find(params[:id])

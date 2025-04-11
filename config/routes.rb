@@ -1,28 +1,11 @@
 Rails.application.routes.draw do
-  # get "dashboard/show"
-  resource :session
-  resources :posts
-  resources :passwords, param: :token
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Routes for user registration
-  get "signup", to: "users#new"      # Shows signup form
-  post "signup", to: "users#create"  # Creates a new user in database
-  root to: "posts#index"
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Authentication routes
+  # Session and authentication routes
+  # resource :session
   get "login", to: "sessions#new", as: :new_session
   post "login", to: "sessions#create", as: :session
-  delete "logout", to: "sessions#destroy", as: :logout  # Changed from :destroy_session
+  delete "logout", to: "sessions#destroy", as: :logout
 
-  # User profile routes
-  get "profile/edit", to: "users#edit", as: :edit_profile
-  patch "profile", to: "users#update", as: :update_profile
-
-  # Registration routes
+  # User registration routes
   get "signup", to: "users#new", as: :signup
   post "signup", to: "users#create"
 
@@ -30,7 +13,11 @@ Rails.application.routes.draw do
   resources :posts
   resources :passwords, param: :token
 
-  # Friends system
+  # Profile routes
+  get "profile/edit", to: "users#edit", as: :edit_profile
+  patch "profile", to: "users#update", as: :update_profile
+
+  # Friends system routes
   resources :friends, only: [ :index ]
   resources :friendships, only: [ :create, :update, :destroy ]
   get "friend_requests", to: "friendships#index", as: :friend_requests
@@ -39,7 +26,9 @@ Rails.application.routes.draw do
     post "friendships", to: "friendships#create"
   end
 
-  # PWA routes (commented out)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Root route
+  root to: "posts#index"
+
+  # Health check route
+  get "up" => "rails/health#show", as: :rails_health_check
 end
