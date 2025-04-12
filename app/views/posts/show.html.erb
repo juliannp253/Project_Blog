@@ -1,5 +1,20 @@
+<div class="card bg-light shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title text-primary"><%= @post.title %></h2>
 
-<%= render @post %>
+    <p class="card-text text-secondary">
+      <%= simple_format(@post.content) %>
+    </p>
+
+    <% if @post.images.attached? %>
+      <div class="mb-3">
+        <% @post.images.each do |image| %>
+          <%= image_tag image.variant(resize_to_limit: [800, 600]), class: "img-fluid rounded mb-2" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <div class="d-flex justify-content-between align-items-center mt-4">
   <div>
