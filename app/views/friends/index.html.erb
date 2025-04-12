@@ -7,7 +7,7 @@
       <h4 class="mb-0">Find New Friends</h4>
     </div>
     <div class="card-body">
-      <%= form_with url: users_path, method: :get, class: "row g-2 align-items-center" do |f| %>
+      <%= form_with url: friends_path, method: :get, class: "row g-2 align-items-center" do |f| %>
         <div class="col-md-10">
           <%= f.text_field :q,
                           class: "form-control",
