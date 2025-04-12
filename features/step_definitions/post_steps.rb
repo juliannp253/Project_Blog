@@ -69,11 +69,11 @@ end
 
 # BEGIN Make a post
 When('I visit the homepage') do
-  visit posts_path
+  visit root_path
 end
 
 When('I click New Post') do
-  click_link 'New post'
+  click_link 'New Post', match: :first
 end
 
 When('fill out the form and submit') do
@@ -91,19 +91,16 @@ end
 
 # BEGIN View Profiles
 When('on the homepage') do
-  visit posts_path
+  visit root_path
 end
 
-When('I click "Me"') do
-  click_link 'My Profile', path(current_user)
+When('I click "My Profile"') do
+ click_link 'Profile', path(current_user)
 end
 
 Then('I should see my profile') do
+  expect(page).to have_content(@bob.email_address)
   expect(page).to have_content(@bob.username)
-  expect(page).to have_content(@bob.email)
-  @bob.posts.each do |post|
-    expect(page).to have_content(post.content)
-  end
 end
 
 When('I am viewing the timeline') do

@@ -2,3 +2,11 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+
+import { Dropdown } from 'bootstrap'
+
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll('.dropdown-toggle').forEach(dropdownToggleEl => {
+    new Dropdown(dropdownToggleEl)
+  });
+});

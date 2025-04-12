@@ -1,0 +1,39 @@
+<div class="friend-requests">
+  <h3>Friend Requests</h3>
+  <% if @user == current_user %>
+    <% if current_user.pending_friend_requests.any? %>
+      <ul class="list-unstyled">
+        <% current_user.pending_friend_requests.each do |friendship| %>
+          <li class="mb-2">
+            <%= friendship.user.email_address %>
+            <%= button_to "Accept",
+                        friendship_path(friendship),
+                        method: :patch,
+                        class: "btn btn-sm btn-success" %>
+            <%= button_to "Decline",
+                        friendship_path(friendship),
+                        method: :delete,
+                        class: "btn btn-sm btn-danger" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No pending friend requests</p>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="friends-list">
+  <h3>Friends</h3>
+  <% if @user.friends.any? %>
+    <ul class="list-unstyled">
+      <% @user.friends.each do |friend| %>
+        <li>
+          <%= link_to friend.email_address, user_path(friend) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No friends yet</p>
+  <% end %>
+</div>

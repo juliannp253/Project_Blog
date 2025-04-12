@@ -6,7 +6,10 @@
 
 <br>
 
-<div>
-  <%= link_to "Show this post", @post %> |
-  <%= link_to "Back to posts", posts_path %>
+<div class="d-flex justify-content-between align-items-center mt-4">
+  <div>
+    <%= link_to "📚 Back to posts", posts_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+  <%= button_to "🗑️ Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
 </div>

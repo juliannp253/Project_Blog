@@ -1,12 +1,23 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
-    <%= post.title %>
-  </p>
+<div id="<%= dom_id post %>" class="col">
+  <div class="card bg-light shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">
+        <i class="fa-solid fa-pen-nib text-primary"></i> <%= post.title %>
+      </h5>
 
-  <p>
-    <strong>Content:</strong>
-    <%= post.content %>
-  </p>
-
+      <p class="card-text text-secondary">
+        <%= truncate(post.content, length: 200) %>
+      </p>
+      <% if post.images.attached? %>
+      <div class="mb-3">
+        <% post.images.each do |image| %>
+          <%= image_tag image.variant(resize_to_limit: [600, 400]), class: "img-fluid rounded mb-2" %>
+        <% end %>
+      </div>
+      <% end %>
+      <div class="text-end">
+        <%= link_to "Show this post", post, class: "btn btn-outline-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
 </div>

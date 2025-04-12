@@ -1,4 +1,7 @@
 source "https://rubygems.org"
+# Gemfile
+# Section for active storage and related gems
+gem "image_processing", "~> 1.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.1"
@@ -66,6 +69,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
 end
 
 group :test do

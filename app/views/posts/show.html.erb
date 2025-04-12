@@ -1,10 +1,11 @@
-<p style="color: green"><%= notice %></p>
 
 <%= render @post %>
 
-<div>
-  <%= link_to "Edit this post", edit_post_path(@post) %> |
-  <%= link_to "Back to posts", posts_path %>
+<div class="d-flex justify-content-between align-items-center mt-4">
+  <div>
+    <%= link_to "✏️ Edit this post", edit_post_path(@post), class: "btn btn-outline-warning me-2" %>
+    <%= link_to "📚 Back to posts", posts_path, class: "btn btn-outline-secondary" %>
+  </div>
 
-  <%= button_to "Destroy this post", @post, method: :delete %>
+  <%= button_to "🗑️ Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
 </div>

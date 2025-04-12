@@ -1,16 +1,15 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Posts" %>
 
-<h1>Posts</h1>
+<div class="container mt-5">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-black">Recent Posts</h2>
+    <%= link_to "New Post", new_post_path, class: "btn btn-primary" %>
+  </div>
 
-<div id="posts">
-  <% @posts.each do |post| %> 
-    <%= render post %>
-    <p>
-      <%= link_to "Show this post", post %>
-    </p>
-  <% end %>
+  <div id="posts" class="row row-cols-1 g-4">
+    <% @posts.each do |post| %>
+      <%= render partial: "post", locals: { post: post } %>
+    <% end %>
+  </div>
 </div>
-
-<%= link_to "New post", new_post_path %>

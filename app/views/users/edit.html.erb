@@ -1,33 +1,56 @@
-<div class="container mt-4">
-  <h2>Edit Profile</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h3>Edit Your Profile</h3>
+        </div>
+        <div class="card-body">
+          <%= form_with(model: current_user, url: update_profile_path, method: :patch, html: { enctype: "multipart/form-data" }) do |f| %>
+            
+            <% if current_user.errors.any? %>
+              <div class="alert alert-danger">
+                <h5><%= pluralize(current_user.errors.count, "error") %> prevented your profile from being updated:</h5>
+                <ul>
+                  <% current_user.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
 
-  <%= form_with(model: current_user, url: update_profile_path, method: :patch) do |f| %>
-    <% if @user.errors.any? %>
-      <div class="alert alert-danger">
-        <h4><%= pluralize(@user.errors.count, "error") %> prevented your profile from being saved:</h4>
-        <ul>
-          <% @user.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+            <div class="mb-3">
+              <%= f.label :email_address, class: "form-label" %>
+              <%= f.email_field :email_address, class: "form-control", value: current_user.email_address, readonly: true %>
+              <small class="text-muted">Your email address cannot be changed.</small>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password, "New Password (leave blank if you don't want to change it)", class: "form-label" %>
+              <%= f.password_field :password, class: "form-control", placeholder: "Enter new password" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password_confirmation, class: "form-label" %>
+              <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm new password" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :bio, "Short Bio", class: "form-label" %>
+              <%= f.text_area :bio, class: "form-control", placeholder: "Tell us about yourself (optional)", rows: 3 %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :profile_picture, class: "form-label" %>
+              <%= f.file_field :profile_picture, class: "form-control" %>
+              <small class="text-muted">Upload a profile picture (optional).</small>
+            </div>
+
+            <%= f.submit "Update Profile", class: "btn btn-success btn-lg w-100" %>
+
           <% end %>
-        </ul>
+        </div>
       </div>
-    <% end %>
-
-    <div class="mb-3">
-      <%= f.label :email_address, class: "form-label" %>
-      <%= f.email_field :email_address, class: "form-control" %>
     </div>
-
-    <div class="mb-3">
-      <%= f.label :password, "New Password (leave blank if you don't want to change it)", class: "form-label" %>
-      <%= f.password_field :password, class: "form-control" %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :password_confirmation, class: "form-label" %>
-      <%= f.password_field :password_confirmation, class: "form-control" %>
-    </div>
-
-    <%= f.submit "Update Profile", class: "btn btn-primary" %>
-  <% end %>
+  </div>
 </div>

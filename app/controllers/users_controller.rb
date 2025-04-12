@@ -22,6 +22,9 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def show
+    @user = current_user
+  end
   def update
     if password_blank? && @user.update(user_params_without_password)
       redirect_to root_path, notice: "Profile updated successfully."
@@ -39,7 +42,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email_address, :name, :password, :password_confirmation)
+    params.require(:user).permit(:email_address, :username, :password, :password_confirmation, :bio)
   end
 
   def user_params_without_password

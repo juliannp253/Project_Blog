@@ -9,6 +9,7 @@ class FriendshipsController < ApplicationController
       @friendship = current_user.friendships.build(friend: @user, status: "pending")
 
       if @friendship.save
+        FriendshipMailer.friend_request_email(current_user, @user).deliver_later
         redirect_to friends_path, notice: "Friend request sent to #{@user.email_address}"
       else
         redirect_to friends_path, alert: "Could not send friend request"

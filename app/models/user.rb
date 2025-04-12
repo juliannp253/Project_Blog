@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, on: :create, length: { minimum: 6 }
-
+  validates :username, presence: true
   def friend_request_sent?(user)
     friendships.pending.exists?(friend: user)
   end

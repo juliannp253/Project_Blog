@@ -1,41 +1,76 @@
 <!-- app/views/users/new.html.erb -->
-<h1>Sign Up</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'%>
+    <%= stylesheet_link_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
 
-<%= form_with model: @user, url: signup_path, local: true do |form| %>
-  <% if @user.errors.any? %>
-    <div style="color: red;">
-      <h2>There were errors with your submission:</h2>
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <body class="bg-dark">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+      <div class="card shadow-lg p-4" style="width: 400px; height: 600px;">
+        <div class="card-body">
+          <h3 class="text-center mb-4 text-black">Sign Up</h3>
+
+          <% if @user.errors.any? %>
+            <div class="alert alert-danger">
+              <h5>There were errors with your submission:</h5>
+              <ul>
+                <% @user.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <%= form_with model: @user, url: signup_path, class: "form-container" do |form| %>
+            <div class="form-group mb-3">
+              <%= form.label :email_address, "Email Address", class: "form-label text-black" %>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                <%= form.email_field :email_address, class: "form-control", placeholder: "Enter your email", required: true %>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :username, "Username", class: "form-label text-black" %>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <%= form.text_field :username, class: "form-control", placeholder: "Enter your username", required: true %>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :password, "Password", class: "form-label text-black" %>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <%= form.password_field :password, class: "form-control", placeholder: "Enter your password", required: true %>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :password_confirmation, "Confirm Password", class: "form-label text-black" %>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <%= form.password_field :password_confirmation, class: "form-control", placeholder: "Confirm your password", required: true %>
+              </div>
+            </div>
+
+            <div class="form-group text-center">
+              <%= form.submit "Sign Up", class: "btn btn-primary btn-block" %>
+            </div>
+          <% end %>
+
+          <div class="text-center mt-3">
+            <%= link_to "Already have an account? Sign in", new_session_path, class: "btn btn-link text-black" %>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-    <div>
-    <%= form.label :username %>
-    <%= form.text_field :username, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :email_address %>
-    <%= form.email_field :email_address, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, required: true %>
-  </div>
-
-  <div>
-    <%= form.submit "Sign Up" %>
-  </div>
-<% end %>
-
-<%= link_to "Already have an account? Sign in", new_session_path %>
+  </body>
+</html>

@@ -6,7 +6,7 @@ Feature: View Profiles
     Given there are two users with posts, Bob and Mary
     And I sign in as Bob
     And on the homepage
-    When I click "Me"
+    When I click "Profile"
     Then I should see my profile
 
   Scenario: when viewing timeline and I see someone elses post

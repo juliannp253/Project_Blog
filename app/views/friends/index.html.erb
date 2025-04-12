@@ -1,62 +1,85 @@
-<div class="container mt-4">
-  <h2>My Friends</h2>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Friends Dashboard</h2>
 
-  <%# Add this new section for finding friends %>
-  <div class="mb-4">
-    <h3>Find Friends</h3>
-    <%= form_with url: users_path, method: :get, class: "d-flex" do |f| %>
-      <%= f.text_field :q, 
-                       class: "form-control me-2", 
-                       placeholder: "Search by email",
-                       value: params[:q] %>
-      <%= f.submit "Search", class: "btn btn-outline-primary" %>
-    <% end %>
-
-    <% if @users_to_add.present? %>
-      <ul class="list-group mt-3">
-        <% @users_to_add.each do |user| %>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span><%= user.email_address %></span>
-            <% if current_user.pending_sent_requests.exists?(friend: user) %>
-              <span class="badge bg-secondary">Request Pending</span>
-            <% else %>
-              <%= button_to "Send Friend Request", 
-                          user_friendships_path(user), 
-                          class: "btn btn-sm btn-primary" %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
-  </div>
-
-  <%# Existing friends list code remains the same %>
-  <h3>Current Friends</h3>
-  <% if @friends.any? %>
-    <ul class="list-group">
-      <% @friends.each do |friend| %>
-        <li class="list-group-item d-flex justify-content-between align-items-center" id="friend-<%= friend.id %>">
-          <span><%= friend.email_address %></span>
-          <div>
-            <%= link_to "View Profile", user_path(friend), class: "btn btn-sm btn-primary" %>
-            <%= button_to "Remove Friend", 
-                       friendship_path(current_user.friendships.find_by(friend: friend)), 
-                       method: :delete,
-                       class: "btn btn-sm btn-danger" %>
-          </div>
-        </li>
+  <!-- Find Friends Section -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Find New Friends</h4>
+    </div>
+    <div class="card-body">
+      <%= form_with url: users_path, method: :get, class: "row g-2 align-items-center" do |f| %>
+        <div class="col-md-10">
+          <%= f.text_field :q,
+                          class: "form-control",
+                          placeholder: "Search by email or name...",
+                          value: params[:q] %>
+        </div>
+        <div class="col-md-2">
+          <%= f.submit "Search", class: "btn btn-outline-primary w-100" %>
+        </div>
       <% end %>
-    </ul>
-  <% else %>
-    <p>You don't have any friends yet.</p>
-  <% end %>
-</div>
-<li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-    <%= current_user.email_address %>
-  </a>
-  <div class="dropdown-menu dropdown-menu-end">
-    <%= link_to "Profile", edit_profile_path, class: "dropdown-item" %>
-    <%= button_to "Sign Out", logout_path, method: :delete, class: "dropdown-item" %>
+
+      <% if @users_to_add.present? %>
+        <div class="row mt-4">
+          <% @users_to_add.each do |user| %>
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1"><%= user.email_address %></h6>
+                  </div>
+                  <div>
+                    <% if current_user.pending_sent_requests.exists?(friend: user) %>
+                      <span class="badge bg-secondary">Request Pending</span>
+                    <% else %>
+                      <%= button_to "Send Friend Request",
+                                    user_friendships_path(user),
+                                    method: :post,
+                                    class: "btn btn-sm btn-primary" %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% elsif params[:q].present? %>
+        <p class="text-muted mt-3">No users found matching your search.</p>
+      <% end %>
+    </div>
   </div>
-</li>
+
+  <!-- Current Friends Section -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0">Your Friends</h4>
+    </div>
+    <div class="card-body">
+      <% if @friends.any? %>
+        <div class="row">
+          <% @friends.each do |friend| %>
+            <div class="col-md-6 mb-3">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1"><%= friend.email_address %></h6>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <%= link_to "View Profile", user_path(friend), class: "btn btn-sm btn-outline-primary" %>
+                    <%= button_to "Remove", 
+                                  friendship_path(current_user.friendships.find_by(friend: friend)), 
+                                  method: :delete,
+                                  data: { turbo_confirm: "Are you sure?" },
+                                  class: "btn btn-sm btn-outline-danger" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted">You don't have any friends yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
