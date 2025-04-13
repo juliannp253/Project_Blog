@@ -18,9 +18,59 @@
 
 <div class="d-flex justify-content-between align-items-center mt-4">
   <div>
-    <%= link_to "✏️ Edit this post", edit_post_path(@post), class: "btn btn-outline-warning me-2" %>
+    <% if current_user == @post.user %>
+      <%= link_to "✏️ Edit this post", edit_post_path(@post), class: "btn btn-outline-warning me-2" %>
+    <% end %>
     <%= link_to "📚 Back to posts", posts_path, class: "btn btn-outline-secondary" %>
   </div>
 
-  <%= button_to "🗑️ Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+  <% if current_user == @post.user %>
+    <%= button_to "🗑️ Destroy this post", @post, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
+  <% end %>
 </div>
+
+<hr>
+
+<h4 class="mt-4 mb-3">🗨️ Comments</h4>
+
+<div class="list-group mb-4">
+  <% @post.comments.each do |comment| %>
+    <div class="list-group-item position-relative">
+      <div class="d-flex justify-content-between align-items-start">
+        <p class="mb-1 fw-semibold text-primary"><%= comment.user.username %>:</p>
+
+        <% if current_user == comment.user %>
+          <div class="position-absolute top-0 end-0 mt-2 me-2 d-flex gap-2">
+            <%= link_to "Edit", post_path(@post, edit_comment_id: comment.id), class: "btn btn-sm btn-outline-secondary" %>
+            <%= button_to "Delete", post_comment_path(@post, comment), method: :delete, data: { confirm: "Delete this comment?" }, class: "btn btn-sm btn-outline-danger" %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if current_user == comment.user && params[:edit_comment_id].to_i == comment.id %>
+        <%= form_with model: [@post, comment], local: true do |form| %>
+          <div class="mt-2">
+            <%= form.text_area :content, class: "form-control", rows: 3, maxlength: 1000 %>
+          </div>
+          <div class="d-flex gap-2 mt-2">
+            <%= form.submit "Save", class: "btn btn-sm btn-primary" %>
+            <%= link_to "Cancel", post_path(@post), class: "btn btn-sm btn-secondary" %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="mb-0 text-body-secondary mt-1" style="max-height: 9em; overflow-y: auto;">
+          <%= simple_format(comment.content) %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= form_with model: [@post, Comment.new], local: true do |form| %>
+  <div class="mb-3">
+    <%= form.label :content, "Add a comment", class: "form-label fw-bold" %>
+    <%= form.text_area :content, class: "form-control", rows: 3, maxlength: 1000, placeholder: "Write your comment here (max 1000 characters)...", required: true %>
+  </div>
+  <%= form.submit "Post Comment", class: "btn btn-outline-primary" %>
+<% end %>
+

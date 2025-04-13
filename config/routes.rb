@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Resources
   resources :posts do
     delete "delete_image", on: :member
+    resources :comments, only: [ :create, :edit, :update, :destroy ]
   end
   resources :passwords, param: :token
 
