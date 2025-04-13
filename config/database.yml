@@ -5,22 +5,31 @@
 #   gem "sqlite3"
 #
 default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  database: mysite_93ah # CHANGE THIS TO YOUR OWN DATABASE NAME IN RENDER
+  username: mysite # CHANGE THIS TO YOUR OWN DATABASE USERNAME IN RENDER
+  password: <%= ENV['DATABASE_PASSWORD'] %> # DO NOT MODIFY THIS LINE!
+  url: <%= ENV['DATABASE_URL'] %> # DO NOT MODIFY THIS LINE!
+ 
+development:
   adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-
-development:
-  <<: *default
   database: storage/development.sqlite3
-
+ 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
   database: storage/test.sqlite3
-
-
+ 
+ 
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
