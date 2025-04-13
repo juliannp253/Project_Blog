@@ -13,6 +13,11 @@ RSpec.describe User, type: :model do
     expect(subject).to be_valid
   end
 
+  it "is valid with a unique email address" do
+    another_user = User.new(email_address: "test@example.com")
+    expect(another_user).not_to be_valid
+  end
+
   it "is not valid without an email_address" do
     subject.email_address = nil
     expect(subject).not_to be_valid
@@ -34,4 +39,5 @@ RSpec.describe User, type: :model do
   end
 
   it { should have_many(:posts) }
+  it { should have_many(:comments) }
 end

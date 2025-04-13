@@ -4,6 +4,7 @@ class CommentsController < ApplicationController
   before_action :authorize_comment!, only: [ :edit, :update, :destroy ]
 
   def create
+    @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
     if @comment.save

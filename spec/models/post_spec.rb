@@ -24,4 +24,8 @@ RSpec.describe Post, type: :model do
   end
 
   it { should belong_to(:user) }
+
+  it "has many comments" do
+    should have_many(:comments)
+  end
 end

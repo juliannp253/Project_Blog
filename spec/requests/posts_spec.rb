@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   before do
-    @user = User.create(email_address: "juser@example.com", password: "123456", password_confirmation: "123456")
+    @user = User.create(email_address: "juser@example.com", username: "Username", password: "123456", password_confirmation: "123456")
     @post = Post.create(title: "Post example", content: "This is content", user_id: @user.id)
   end
 
@@ -14,6 +14,7 @@ RSpec.describe "Posts", type: :request do
         password: "123456"
       }
     end
+
     it "should display dashboard" do
       get root_path
       expect(response).to be_ok
