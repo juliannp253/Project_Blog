@@ -7,8 +7,8 @@ Feature: Friendship System
   Scenario: Sending a friend request
     Given there are two users with posts, Bob and Mary
     And I sign in as Bob
-    When I visit Mary's profile
-    And I click "Add Friend"
+    When I visit the friends tab and add Mary's email
+    And I click "Send friend request"
     Then a friend request should be sent to Mary
     And I should see "Friend request sent"
 

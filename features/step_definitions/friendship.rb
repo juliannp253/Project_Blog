@@ -1,6 +1,35 @@
-Given("Bob has sent a friend request to Mary") do
-  @bob.send_friend_request(@mary)
+# Given("there are two users with posts, Bob and Mary") do
+#   @bob = User.create!(username: "Bob", email_address: "bob@example.com", password: 'password')
+#   @mary = User.create!(username: "Mary", email_address: "mary@example.com", password: 'password')
+# end
+
+# When("I sign in as Bob") do
+#   visit new_session_path
+#   fill_in "user_email", with: @bob.email_address
+#   fill_in "user_password", with: @bob.password
+#   click_button 'Login'
+# end
+
+When("I visit the friends tab and add Mary's email") do
+  click_link_or_button "Friends"
+  fill_in "Search by email or name...", with: @mary.email_address
 end
+
+When("I click Send friend request") do
+  click_button "Search"
+  expect(page).to have_content(@mary.email_address)
+  expect(page).to have_button("Send Friend Request", wait: 5)
+  click_button "Send Friend Request"
+end
+
+When("I should see Friend request sent") do
+  expect(page).to have_contnet("Friend request sent")
+end
+
+Then("a friend request should be sent to Mary") do
+  expect(@mary.freind_requests.any?).to eq(true)
+end
+
 
 Given("Bob and Mary are friends") do
   @bob.send_friend_request(@mary)

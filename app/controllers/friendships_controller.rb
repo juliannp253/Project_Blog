@@ -21,7 +21,7 @@ class FriendshipsController < ApplicationController
 
   def update
     @friendship = Friendship.find(params[:id])
-    @friendship.accept!
+    @friendship.accepted!
     redirect_to current_user, notice: "You are now friends with #{@friendship.user.email_address}"
   end
 
