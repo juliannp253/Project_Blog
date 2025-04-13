@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_13_182807) do
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
+    t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
@@ -79,11 +80,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_13_182807) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "username", null: false
     t.string "email_address", null: false
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username"
     t.text "bio"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
