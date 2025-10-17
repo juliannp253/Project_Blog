@@ -1,65 +1,93 @@
-# Codespaces Rails 8 Template
+# BlogApp
 
-Welcome to your brand new codespace template with Rails 8 loaded. 
+Social blogging platform built with Rails 8. Create posts with images, comment on content, and connect with other users through friend requests and a simple profile system.
 
-## How to use this template
+## Features
 
-* When you create a new Codespaces let the image build (it will take around 5 to 10 minutes).
-* Confirm installation running ```ruby -v```, ```rails -v```, and ```yarn -v```, these commands should not generate errors
-* If they do run the following commands in order:
+- Email/password authentication with secure sessions
+- Password reset via token email (Letter Opener in development)
+- Posts: create, edit, delete; attach multiple images (Active Storage)
+- Comments: add, edit, delete by author
+- Friends: search by email, send/accept/decline requests, list/remove friends
+- Profile: username, bio, edit profile UI
+- Responsive UI using Bootstrap 5 and Font Awesome
+- Turbo/Stimulus with Importmap; no Node-based JS bundler required
 
-```shell
-sudo apt-get update
-sudo apt-get install npm -y
-sudo npm install -g yarn -y
-bundle config set without 'production'
+## Tech Stack
+
+- Ruby `3.3.2`
+- Rails `8.x`
+- Hotwire (`turbo-rails`, `stimulus-rails`)
+- Importmap for JS, `cssbundling-rails` for SCSS/Sass
+- Active Storage (Disk) for image uploads
+- SQLite (development/test), PostgreSQL ready for production
+- RSpec and Cucumber for testing
+
+## Getting Started
+
+### Prerequisites
+
+- Ruby `3.3.2` and Bundler
+- SQLite (for local dev) or Postgres (for production)
+- Node.js and Yarn (for CSS building via Sass)
+
+### Setup
+
+```bash
 bundle install
-yarn install --check-files
-```
-* Go to Ports and change the visibility of the port to `Public`
-
-Done you are ready to use the template!
-
-## Gems to note
-
-This template comes pre-loaded with all the gems we will use in the semester:
-
-* cucumber_rails
-* capybara
-* rspec_rails
-* factory_bot_rails
-* pg
-* sqlite3
-
-You can add more gems with ```bundle add GEM_NAME```
-
-## Rails quality of life
-
-* Rails 8 is great you can build a quick authentication system with the following command
-
-```shell
-bin/rails generate authentication
+yarn install
+bin/rails db:setup    # or: bin/rails db:create db:migrate
 ```
 
-This generator creates necessary models, controllers, mailers, and views, streamlining the process of implementing secure, session-based authentication. 
+### Run (development)
 
-***NOTE: Registration is our job to define.***
-
-* Rails has a bunch of generators for `scaffold`, `rspec:model`, `rspec:controller`, etc. Those are some key words, you can look the generators online. NOTE: If you do this is when you should make branches to avoid breaking the main copy of your template.
-
-## Running tests
-
-* You can run tests as always
-
-```shell
-cucumber
-rspec
+```bash
+bin/dev              # Rails server + CSS watcher
+# or
+bin/rails server     # then in another shell: yarn watch:css
 ```
 
-* Or you can use `rake` to run all tests at once. ***WARNING: Delete any tests in the `test/` folder if the generators create them, they do not work, remove them (expect the factories)***.
+Visit `http://localhost:3000`.
 
-## Deploying
+### Auth & Navigation
 
-* The app should deploy in the browser (this does not work currently 😅, but leaving it here in case you want to solve that issue)
-* Instead open the app in a separate tab in your browser.
-* If the app is not running use `rails server` in the terminal.
+- Sign up: `GET /signup`
+- Sign in: `GET /login`
+- Password reset: `GET /passwords/new`
+- Posts: `GET /`, `GET /posts`, `GET /my_posts`
+- Friends: `GET /friends`, friend requests: `GET /friend_requests`
+
+## Configuration
+
+- Active Storage: uses local Disk in development/test (`config/storage.yml`).
+- Development mailer: Letter Opener opens emails in the browser (`config/environments/development.rb`).
+- Production DB: set `DATABASE_URL` and `DATABASE_PASSWORD` if using Postgres (see `config/database.yml`).
+- SMTP (production): configure credentials via `rails credentials:edit` if sending real emails.
+
+## Testing
+
+```bash
+bundle exec rspec      # unit/request/mailers
+bundle exec cucumber   # BDD feature tests
+```
+
+## API
+
+Basic JSON endpoints available via Jbuilder:
+
+- `GET /posts.json`
+- `GET /posts/:id.json`
+
+## Deployment
+
+- Container-friendly and compatible with platforms like Render/Fly.io.
+- Ensure env vars (e.g., `RAILS_ENV`, `DATABASE_URL`, `RAILS_MASTER_KEY`) are set.
+- Configure mail delivery for password resets in production.
+
+## Contributing
+
+Pull requests welcome. For major changes, please open an issue first to discuss what you’d like to change.
+
+## License
+
+This project is intended for educational and portfolio purposes. If you need a specific license attached, open an issue or add a `LICENSE` file.
